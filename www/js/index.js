@@ -58,9 +58,10 @@ document.addEventListener("deviceready", onDeviceReady, false);
  // device APIs are available
  //
 function onDeviceReady() {
-    navigator.geolocation.getCurrentPosition(onSuccess, onError);
+   // navigator.geolocation.getCurrentPosition(onSuccess, onError);
 }
 
+/*
  // onSuccess Geolocation
  //
 function onSuccess(position) {
@@ -99,7 +100,9 @@ function onError(error) {
         'message: ' + error.message + '\n');
 }
 
-var checkConnection = function() {    
+*/
+
+/*var checkConnection = function() {    
 
     var networkState = navigator.connection.type;
     var states = {};    
@@ -112,7 +115,8 @@ var checkConnection = function() {
     states[Connection.CELL]     = 'Cell generic connection';     
     states[Connection.NONE]     = 'No network connection';
 
-    alert('Connection type: ' + states[networkState]); }
+    alert('Connection type: ' + states[networkState]); 
+}*/
 
 document.addEventListener("offline", function() {  
     var element = document.getElementById('network');
@@ -124,7 +128,49 @@ document.addEventListener("offline", function() {
 document.addEventListener("online", function() {   
     var element = document.getElementById('network');
     var string = "online";
-    checkConnection();
+    //checkConnection();
 
     element.innerHTML = string;
+    
+    contactPull();
+    
 }, false);
+
+
+function contactPull(){
+    
+    var request = new XMLHttpRequest();
+	request.open("GET", "https://dl.dropboxusercontent.com/u/887989/MAD9135/contacts.json", true);
+	request.onreadystatechange = function() {
+	if (request.readyState === 4){
+				if (request.status === 200 || request.status === 0) {
+					console.log("response: " + request.responseText);
+                    
+                    var contact = navigator.contacts.create();
+                    
+                    contact.displayName = "Guy Incognito";
+                    
+                    var name = new ContactName();
+                    name.givenName = "Guy";
+                    name.familyName = "Incognito";
+                    contact.name = name;
+                    
+                    contact.save(saveSuccess,saveError);
+				}
+			}
+			else{
+				console.log(request.readyState);
+				console.log("connecting...");
+			}
+	};	
+    
+	request.send();
+}
+
+function saveSuccess(){
+    alert("Worked!");
+}
+
+function saveError(){
+    alert("Didnt work");
+}

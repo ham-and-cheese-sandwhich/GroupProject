@@ -11,6 +11,10 @@
                         {
                             "xml": "<permission description=\"Required for accessing user location.\" name=\"geolocation\" />",
                             "count": 1
+                        },
+                        {
+                            "xml": "<permission access=\"readwrite\" description=\"Required for accessing address book.\" name=\"contacts\" privileged=\"true\" />",
+                            "count": 1
                         }
                     ]
                 }
@@ -22,6 +26,9 @@
             "PACKAGE_NAME": "io.cordova.hellocordova"
         },
         "org.apache.cordova.network-information": {
+            "PACKAGE_NAME": "io.cordova.hellocordova"
+        },
+        "org.apache.cordova.contacts": {
             "PACKAGE_NAME": "io.cordova.hellocordova"
         }
     },
