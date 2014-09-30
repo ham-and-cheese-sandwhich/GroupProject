@@ -58,7 +58,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
  // device APIs are available
  //
 function onDeviceReady() {
-   // navigator.geolocation.getCurrentPosition(onSuccess, onError);
+    //navigator.geolocation.getCurrentPosition(onSuccess, onError);
 }
 
 /*
@@ -99,8 +99,8 @@ function onError(error) {
     alert('code: ' + error.code + '\n' +
         'message: ' + error.message + '\n');
 }
-
 */
+
 
 /*var checkConnection = function() {    
 
@@ -146,16 +146,10 @@ function contactPull(){
 				if (request.status === 200 || request.status === 0) {
 					console.log("response: " + request.responseText);
                     
-                    var contact = navigator.contacts.create();
-                    
-                    contact.displayName = "Guy Incognito";
-                    
-                    var name = new ContactName();
-                    name.givenName = "Guy";
-                    name.familyName = "Incognito";
-                    contact.name = name;
-                    
-                    contact.save(saveSuccess,saveError);
+                    for(var i = 0; i < request.response.length; i++){
+                        console.log(request.response[i].firstname);
+                    }
+
 				}
 			}
 			else{
