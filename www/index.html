@@ -31,10 +31,16 @@
 
 <body>
     <div class="app">
-        <h1>Contacts</h1>
+        <div id="title"><h1>Contacts</h1><button id="addContact">+</button></div>
         <div id="deviceready" class="blink">
             <p id="geolocation"></p>
             <p id="network"></p>
+            
+            <button id="getContacts">Display all Contacts</button>
+            <button id="clear">Clear all contacts</button>
+            
+            <div id="contacts">
+            </div>
         </div>
     </div>
     <script type="text/javascript" src="cordova.js"></script>

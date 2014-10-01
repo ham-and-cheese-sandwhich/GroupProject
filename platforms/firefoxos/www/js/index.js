@@ -182,3 +182,61 @@ function saveSuccess(){
 function saveError(){
     //alert("Didnt work");
 }
+
+var clearButton = document.getElementById("clear");
+
+clearButton.addEventListener("click", function() {  
+    
+    var options      = new ContactFindOptions();
+    options.multiple = true;
+    var fields       = ["*"];
+    navigator.contacts.find(fields, findSuccess, findError, options);
+    
+}, false);
+
+function findSuccess(contacts){
+    //alert("Worked!");
+    
+    for (var i = 0; i < contacts.length; i++) {
+        contacts[i].remove(removeSuccess, removeError);
+    }
+}
+
+function findError(){
+    console.log("find Didnt work");
+}
+
+function removeSuccess(){
+    console.log("remove Worked!");
+}
+
+function removeError(){
+    console.log("remove Didnt work");
+}
+
+var getContacts = document.getElementById("getContacts");
+
+getContacts.addEventListener("click", function() {  
+    
+    var options      = new ContactFindOptions();
+    options.multiple = true;
+    var fields       = ["*"];
+    navigator.contacts.find(fields, displaySuccess, displayError, options);
+    
+}, false);
+
+function displaySuccess(contacts){
+    
+    console.log("displaying");
+    
+    var mainDiv = document.getElementById("contacts");
+    
+    for(var i = 0; i < contacts.length; i++){
+        mainDiv.innerHTML += "<div id='contact-"+i+"'><h2>"+contacts[i].displayName+"</h2></div>";
+        //console.log("displaying");
+    }
+}
+
+function displayError(){
+    console.log("display Didnt work");
+}
