@@ -146,8 +146,22 @@ function contactPull(){
 				if (request.status === 200 || request.status === 0) {
 					console.log("response: " + request.responseText);
                     
+                    var rawData = JSON.parse(request.responseText);
+                    var contact;
+                    var name;
+                    
                     for(var i = 0; i < request.response.length; i++){
-                        console.log(request.response[i].firstname);
+                        //console.log(rawData[i].firstname);
+                        
+                        contact = navigator.contacts.create();
+                        contact.displayName = rawData[i].firstname + " " + rawData[i].lastname;
+                        
+                        name = new ContactName();
+                        name.givenName = rawData[i].firstname;
+                        name.familyName = rawData[i].lastname;
+                        contact.name = name;
+                        contact.save(saveSuccess,saveError);
+                        
                     }
 
 				}
@@ -162,9 +176,9 @@ function contactPull(){
 }
 
 function saveSuccess(){
-    alert("Worked!");
+    //alert("Worked!");
 }
 
 function saveError(){
-    alert("Didnt work");
+    //alert("Didnt work");
 }
