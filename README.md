@@ -1,12 +1,11 @@
-MAD9135
+MAD9135 Group Project
 =======
 
-Teacher
-=======
-
-Simon MacDonald - macdonst
 
 Students
 ========
 
 Joey Pelletier
+Chad Maron
+Jessica Coulas
+Demi Tremblay
