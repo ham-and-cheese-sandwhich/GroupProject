@@ -134,8 +134,6 @@ document.addEventListener("online", function() {
     
     contactPull();
     
-    //publishContacts();
-    
 }, false);
 
 
@@ -165,6 +163,40 @@ function contactPull(){
                 name.givenName = rawData[i].firstname;
                 name.familyName = rawData[i].lastname;
                 contact.name = name;
+                
+                
+                var phoneNumbers = [];
+                phoneNumbers[0] = new ContactField("mobile", rawData[i].phone, false);
+                contact.phoneNumbers = phoneNumbers;
+                
+                var emails = [];
+                emails[0] = new ContactField("email", rawData[i].email, false);
+                contact.emails = emails;
+                
+                var addresses= [];
+                var address = new ContactAddress();
+                address.locality = rawData[i].city;
+                address.streetAddress = rawData[i].street;
+                address.type = "Home";
+                address.region = rawData[i].state;
+                
+                addresses[0]= address;
+               
+                contact.addresses = addresses;
+                
+                /*
+                {
+                country; // country name corresponding to this ContactAddress.
+                formatted; // the full physical address
+                locality; //the locality (or city) name corresponding to this ContactAddress.
+                postalCode of type DOMString, nullable
+                pref; // primary address if true, By default, the value is false.
+                region; // the region (or state/province) name corresponding to this ContactAddress.
+                streetAddress; // the street address corresponding to this ContactAddress.
+                type; // the type of address (e.g. work, home, premises, etc).
+                };
+                */
+                    
                 contact.save(saveSuccess(i),saveError);
 
                 }
@@ -229,12 +261,22 @@ function displaySuccess(contacts){
     var list = document.getElementById("contacts");
     //var option;
     
-    list.innerHTML += "<ul>";
+    list.innerHTML+= "<ul>";
     for(var i = 0; i < contacts.length; i++){
-        list.innerHTML += "<li><a href='#'><p>" + contacts[i].displayName + "</p></a></li>";
-		
+        list.innerHTML += "<li><a id = 'contact-"+i+"'><p>" + contacts[i].displayName + "</p></a></li>";
+        
+        
 		}
-    list.innerHTML += "</ul>";
+    list.innerHTML+= "</ul>";
+    
+    for(var j=0; j<contacts.length; j++) {
+        var contactItem = document.getElementById("contact-"+j);
+        console.log(contactItem);
+        contactItem.addEventListener("click", function(){console.log("IS IT WORKING YET!?");}, false);
+    }
+    
+    console.log("displaying");
+    
 		
     }
 
@@ -242,16 +284,14 @@ function displayError(){
     console.log("display Didnt work");
 }
 
-function saveSuccess(i){
-    //alert("Worked!");
-    
-    
+function saveSuccess(i){ 
     if(i == 4){
         
-        setTimeout(function(){publishContacts();}, 100);
+        setTimeout(function(){publishContacts();}, 2000);
     }
 }
 
 function saveError(){
     //alert("Didnt work");
 }
+
