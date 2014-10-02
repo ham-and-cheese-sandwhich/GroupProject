@@ -274,7 +274,6 @@ function displaySuccess(contacts){
         contactItem.addEventListener("click", function(){
             
             var splitted = this.id.split("-");
-            console.log(splitted[1]);
             var app = document.getElementById("app");
             var overlay = document.createElement("div");
             overlay.id = "overlay";
@@ -284,12 +283,25 @@ function displaySuccess(contacts){
             app.appendChild(overlay);
 
             document.getElementById("home").style.display="none";
+            
+            var phoneNum;
+            if (contacts[splitted[1]].phoneNumbers[0]){
+                phoneNum = contacts[splitted[1]].phoneNumbers[0].value;
+            }else{
+                phoneNum = "";
+            }
 
-            var string = '<form><fieldset><input type="text" placeholder="First Name" value="'+contacts[splitted[1]].name.givenName+'" required=""><input type="text" placeholder="Last Name" value="'+contacts[splitted[1]].name.familyName+'" required=""><input type="tel" placeholder="Phone number" value="'+contacts[splitted[1]].phoneNumbers[0].value+'" required=""><input type="text" placeholder="Email" value="'+contacts[splitted[1]].emails[0]+'" required=""><input type="text" placeholder="Street" value="'+contacts[splitted[1]].addresses.streetAddress+'" required=""><input type="text" placeholder="City" value="'+contacts[splitted[1]].addresses.locality+'" required=""></form>';
+            var string = '<form><fieldset><input type="text" placeholder="First Name" value="'+contacts[splitted[1]].name.givenName+'" required=""><input type="text" placeholder="Last Name" value="'+contacts[splitted[1]].name.familyName+'" required=""><input type="tel" placeholder="Phone number" value="'+phoneNum+'" required=""><input type="text" placeholder="Email" value="'+contacts[splitted[1]].emails[0].value+'" required=""><input type="text" placeholder="Street" value="'+contacts[splitted[1]].addresses[0].streetAddress+'" required=""><input type="text" placeholder="City" value="'+contacts[splitted[1]].addresses[0].locality+'" required=""><button id="saveContact">Save</button></form>';
 
             overlay.innerHTML += string;                               
-                                     
-                                     
+            
+            document.getElementById("saveContact").addEventListener("click", function() {  
+    
+                console.log("saving!");
+                
+            }, false);
+            
+            
         }, false);
     }
     
