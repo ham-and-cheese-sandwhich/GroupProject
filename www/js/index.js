@@ -229,12 +229,12 @@ function displaySuccess(contacts){
     var list = document.getElementById("contacts");
     //var option;
     
-    
+    list.innerHTML += "<ul>";
     for(var i = 0; i < contacts.length; i++){
-        list.innerHTML += "<ul><li><a href='#'><p>" + contacts[i].displayName + "</p></a></li></ul>";
+        list.innerHTML += "<li><a href='#'><p>" + contacts[i].displayName + "</p></a></li>";
 		
 		}
-    console.log("displaying");
+    list.innerHTML += "</ul>";
 		
     }
 
