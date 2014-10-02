@@ -271,8 +271,26 @@ function displaySuccess(contacts){
     
     for(var j=0; j<contacts.length; j++) {
         var contactItem = document.getElementById("contact-"+j);
-        console.log(contactItem);
-        contactItem.addEventListener("click", function(){console.log("IS IT WORKING YET!?");}, false);
+        contactItem.addEventListener("click", function(){
+            
+            var splitted = this.id.split("-");
+            console.log(splitted[1]);
+            var app = document.getElementById("app");
+            var overlay = document.createElement("div");
+            overlay.id = "overlay";
+
+            overlay.innerHTML = "";
+
+            app.appendChild(overlay);
+
+            document.getElementById("home").style.display="none";
+
+            var string = '<form><fieldset><input type="text" placeholder="First Name" value="'+contacts[splitted[1]].name.givenName+'" required=""><input type="text" placeholder="Last Name" value="'+contacts[splitted[1]].name.familyName+'" required=""><input type="tel" placeholder="Phone number" value="'+contacts[splitted[1]].phoneNumbers[0].value+'" required=""><input type="text" placeholder="Email" value="'+contacts[splitted[1]].emails[0]+'" required=""><input type="text" placeholder="Street" value="'+contacts[splitted[1]].addresses.streetAddress+'" required=""><input type="text" placeholder="City" value="'+contacts[splitted[1]].addresses.locality+'" required=""></form>';
+
+            overlay.innerHTML += string;                               
+                                     
+                                     
+        }, false);
     }
     
     console.log("displaying");
@@ -295,3 +313,7 @@ function saveError(){
     //alert("Didnt work");
 }
 
+function editContact(contacts){
+    
+    
+}
