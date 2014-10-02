@@ -133,6 +133,7 @@ document.addEventListener("online", function() {
     element.innerHTML = string;
     
     contactPull();
+	getContacts();
     
 }, false);
 
@@ -175,13 +176,7 @@ function contactPull(){
 	request.send();
 }
 
-function saveSuccess(){
-    //alert("Worked!");
-}
 
-function saveError(){
-    //alert("Didnt work");
-}
 
 var clearButton = document.getElementById("clear");
 
@@ -225,18 +220,44 @@ getContacts.addEventListener("click", function() {
     
 }, false);
 
+function getContacts(){
+	console.log("derp");
+	var options      = new ContactFindOptions();
+    options.multiple = true;
+    var fields       = ["*"];
+    navigator.contacts.find(fields, displaySuccess, displayError, options);
+}
+
 function displaySuccess(contacts){
     
     console.log("displaying");
     
     var mainDiv = document.getElementById("contacts");
-    
+    var option;
     for(var i = 0; i < contacts.length; i++){
         mainDiv.innerHTML += "<div id='contact-"+i+"'><h2>"+contacts[i].displayName+"</h2></div>";
+		console.log("Div created, creating option");
+		option = document.getElementById("contact-"+i);
+		console.log("option created, building listener");
+		option.addEventListener("click",function(){
+			alert(contacts[i].displayName);
+			console.log("contacts made");
+		
+		
+		});
         //console.log("displaying");
+		
     }
 }
 
 function displayError(){
     console.log("display Didnt work");
+}
+
+function saveSuccess(){
+    //alert("Worked!");
+}
+
+function saveError(){
+    //alert("Didnt work");
 }
