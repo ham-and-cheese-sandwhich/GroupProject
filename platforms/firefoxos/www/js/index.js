@@ -119,10 +119,10 @@ function onError(error) {
 }*/
 
 document.addEventListener("offline", function() {  
-    var element = document.getElementById('network');
+    var element = document.getElementById('contacts');
     var string = "offline";
 
-    element.innerHTML = string;
+    contacts.innerHTML = string;
 }, false);
 
 document.addEventListener("online", function() {   
@@ -133,7 +133,8 @@ document.addEventListener("online", function() {
     element.innerHTML = string;
     
     contactPull();
-	getContacts();
+    
+    //publishContacts();
     
 }, false);
 
@@ -144,33 +145,37 @@ function contactPull(){
 	request.open("GET", "https://dl.dropboxusercontent.com/u/887989/MAD9135/contacts.json", true);
 	request.onreadystatechange = function() {
 	if (request.readyState === 4){
-				if (request.status === 200 || request.status === 0) {
-					console.log("response: " + request.responseText);
-                    
-                    var rawData = JSON.parse(request.responseText);
-                    var contact;
-                    var name;
-                    
-                    for(var i = 0; i < request.response.length; i++){
-                        //console.log(rawData[i].firstname);
-                        
-                        contact = navigator.contacts.create();
-                        contact.displayName = rawData[i].firstname + " " + rawData[i].lastname;
-                        
-                        name = new ContactName();
-                        name.givenName = rawData[i].firstname;
-                        name.familyName = rawData[i].lastname;
-                        contact.name = name;
-                        contact.save(saveSuccess,saveError);
-                        
-                    }
+        
+        //console.log("here");
+        
+        if (request.status === 200 || request.status === 0) {
+            console.log("response: " + request.responseText);
 
-				}
-			}
-			else{
-				console.log(request.readyState);
-				console.log("connecting...");
-			}
+            var rawData = JSON.parse(request.responseText);
+            var contact;
+            var name;
+
+            for(var i = 0; i < request.response.length; i++){
+                //console.log(rawData[i].firstname);
+
+                contact = navigator.contacts.create();
+                contact.displayName = rawData[i].firstname + " " + rawData[i].lastname;
+
+                name = new ContactName();
+                name.givenName = rawData[i].firstname;
+                name.familyName = rawData[i].lastname;
+                contact.name = name;
+                contact.save(saveSuccess(i),saveError);
+
+                }
+
+            }
+    
+        }
+        else{
+            console.log(request.readyState);
+            console.log("connecting...");
+        }
 	};	
     
 	request.send();
@@ -209,18 +214,7 @@ function removeError(){
     console.log("remove Didnt work");
 }
 
-var getContacts = document.getElementById("getContacts");
-
-getContacts.addEventListener("click", function() {  
-    
-    var options      = new ContactFindOptions();
-    options.multiple = true;
-    var fields       = ["*"];
-    navigator.contacts.find(fields, displaySuccess, displayError, options);
-    
-}, false);
-
-function getContacts(){
+function publishContacts(){
 	console.log("derp");
 	var options      = new ContactFindOptions();
     options.multiple = true;
@@ -234,6 +228,7 @@ function displaySuccess(contacts){
     
     var mainDiv = document.getElementById("contacts");
     var option;
+    
     for(var i = 0; i < contacts.length; i++){
         mainDiv.innerHTML += "<div id='contact-"+i+"'><h2>"+contacts[i].displayName+"</h2></div>";
 		console.log("Div created, creating option");
@@ -245,7 +240,7 @@ function displaySuccess(contacts){
 		
 		
 		});
-        //console.log("displaying");
+        console.log("displaying");
 		
     }
 }
@@ -254,8 +249,14 @@ function displayError(){
     console.log("display Didnt work");
 }
 
-function saveSuccess(){
+function saveSuccess(i){
     //alert("Worked!");
+    
+    
+    if(i == 4){
+        
+        setTimeout(function(){publishContacts();}, 100);
+    }
 }
 
 function saveError(){
