@@ -226,24 +226,17 @@ function displaySuccess(contacts){
     
     console.log("displaying");
     
-    var mainDiv = document.getElementById("contacts");
-    var option;
+    var list = document.getElementById("contacts");
+    //var option;
+    
     
     for(var i = 0; i < contacts.length; i++){
-        mainDiv.innerHTML += "<div id='contact-"+i+"'><h2>"+contacts[i].displayName+"</h2></div>";
-		console.log("Div created, creating option");
-		option = document.getElementById("contact-"+i);
-		console.log("option created, building listener");
-		option.addEventListener("click",function(){
-			alert(contacts[i].displayName);
-			console.log("contacts made");
+        list.innerHTML += "<ul><li><a href='#'><p>" + contacts[i].displayName + "</p></a></li></ul>";
 		
-		
-		});
-        console.log("displaying");
+		}
+    console.log("displaying");
 		
     }
-}
 
 function displayError(){
     console.log("display Didnt work");
