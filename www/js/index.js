@@ -136,6 +136,9 @@ document.addEventListener("online", function() {
     
 }, false);
 
+console.log("setting event");
+document.getElementById("addContact").addEventListener("click", newContact, false);
+
 
 function contactPull(){
     
@@ -326,6 +329,22 @@ function saveError(){
 }
 
 function editContact(contacts){
+}
+
+function newContact(){
+    console.log("new contact!");
     
+    var app = document.getElementById("app");
+    var overlay = document.createElement("div");
+    overlay.id = "overlay";
+
+    overlay.innerHTML = "";
+
+    app.appendChild(overlay);
+
+    document.getElementById("home").style.display="none";
     
+    var string = '<form><fieldset><input type="text" placeholder="First Name" value="" required=""><input type="text" placeholder="Last Name" value="" required=""><input type="tel" placeholder="Phone number" value="" required=""><input type="text" placeholder="Email" value="" required=""><input type="text" placeholder="Street" value="" required=""><input type="text" placeholder="City" value="" required=""><button id="saveContact">Save</button></form>';
+
+            overlay.innerHTML += string;
 }
