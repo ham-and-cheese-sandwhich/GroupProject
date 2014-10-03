@@ -4,8 +4,8 @@
         "*"
     ],
     "version": "0.0.1",
-    "name": "HelloCordova",
-    "description": "A sample Apache Cordova application that responds to the deviceready event.",
+    "name": "Contacts App",
+    "description": "Group Project",
     "developer": {
         "name": "Apache Cordova Team",
         "url": "http://cordova.io"

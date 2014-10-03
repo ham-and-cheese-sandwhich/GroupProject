@@ -2,9 +2,9 @@
 <widget id="io.cordova.hellocordova" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <permission description="Required for accessing user location." name="geolocation" />
     <permission access="readwrite" description="Required for accessing address book." name="contacts" privileged="true" />
-    <name>HelloCordova</name>
+    <name>Contacts App</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+       Group Project
     </description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">
         Apache Cordova Team
