@@ -16,7 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 var app = {
+    add:true,
     // Application Constructor
     initialize: function() {
         this.bindEvents();
@@ -58,18 +60,14 @@ document.addEventListener("deviceready", onDeviceReady, false);
  // device APIs are available
  //
 function onDeviceReady() {
-    //navigator.geolocation.getCurrentPosition(onSuccess, onError);
+    
 }
 
-/*
- // onSuccess Geolocation
- //
+
+var currentLocation = "";
+
+
 function onSuccess(position) {
-    var element = document.getElementById('geolocation');
-    var string = 'Latitude: ' + position.coords.latitude + '<br />' +
-        'Longitude: ' + position.coords.longitude + '<br />';
-    element.innerHTML = string;
-    console.log(string);
 
     console.log('calling xhr');
     var request = XMLHttpRequest();
@@ -81,11 +79,32 @@ request.onreadystatechange = function() {
     if (request.readyState == 4) {
         if (request.status == 200 || request.status == 0) {
             var city = JSON.parse(request.responseText);
-            console.log(city.results[0].locations[0].adminArea5);
 
-            var string = 'Latitude: ' + position.coords.latitude + '<br />' +
-        'Longitude: ' + position.coords.longitude + '<br /> You are in: ' + city.results[0].locations[0].adminArea5;
-            element.innerHTML = string;
+            
+            console.log(" Before returning: " + city.results[0].locations[0].adminArea5);
+            
+            currentLocation = city.results[0].locations[0].adminArea5;
+            var currentStreet = city.results[0].locations[0].street;
+            
+            console.log("Before saving: " + currentLocation);
+    
+            var app = document.getElementById("app");
+            var overlay = document.createElement("div");
+            overlay.id = "overlay";
+
+            overlay.innerHTML = "";
+
+            app.appendChild(overlay);
+
+            document.getElementById("home").style.display="none";
+            add = true;
+            var string = '<form><fieldset><input id = "formNameFirst"  type="text" placeholder="First Name" value="" required=""><input id = "formNameLast" type="text" placeholder="Last Name" value="" required=""><input id = "formTel" type="tel" placeholder="Phone number" value="" required=""><input id = "formEmail" type="text" placeholder="Email" value="" required=""><input id = "formStreet" type="text" placeholder="Street" value="'+currentStreet+'" required=""><input id = "formCity" type="text" placeholder="City" value="'+currentLocation+'" required=""><input id = "formZip" type="text" placeholder="Zip Code" value="'+city.results[0].locations[0].postalCode+'" required=""><button id="saveContact">Save</button></form>';
+
+            overlay.innerHTML += string;
+            document.getElementById("saveContact").addEventListener("click", function(e){
+                e.preventDefault();
+                saveContact(formNameFirst.value, formNameLast.value, formTel.value, formEmail.value, formStreet.value, formCity.value, "");
+            });
 
         }
     }
@@ -99,7 +118,7 @@ function onError(error) {
     alert('code: ' + error.code + '\n' +
         'message: ' + error.message + '\n');
 }
-*/
+
 
 
 /*var checkConnection = function() {    
@@ -127,12 +146,8 @@ document.addEventListener("offline", function() {
 
 document.addEventListener("online", function() {   
     var element = document.getElementById('network');
-    var string = "online";
-    //checkConnection();
-
-    element.innerHTML = string;
-    
-    contactPull();
+   
+    contactExist();
     
 }, false);
 
@@ -216,39 +231,6 @@ function contactPull(){
 	request.send();
 }
 
-
-
-var clearButton = document.getElementById("clear");
-
-clearButton.addEventListener("click", function() {  
-    
-    var options      = new ContactFindOptions();
-    options.multiple = true;
-    var fields       = ["*"];
-    navigator.contacts.find(fields, findSuccess, findError, options);
-    
-}, false);
-
-function findSuccess(contacts){
-    //alert("Worked!");
-    
-    for (var i = 0; i < contacts.length; i++) {
-        contacts[i].remove(removeSuccess, removeError);
-    }
-}
-
-function findError(){
-    console.log("find Didnt work");
-}
-
-function removeSuccess(){
-    console.log("remove Worked!");
-}
-
-function removeError(){
-    console.log("remove Didnt work");
-}
-
 function publishContacts(){
 	console.log("derp");
 	var options      = new ContactFindOptions();
@@ -293,16 +275,21 @@ function displaySuccess(contacts){
             }else{
                 phoneNum = "";
             }
-
-            var string = '<form><fieldset><input type="text" placeholder="First Name" value="'+contacts[splitted[1]].name.givenName+'" required=""><input type="text" placeholder="Last Name" value="'+contacts[splitted[1]].name.familyName+'" required=""><input type="tel" placeholder="Phone number" value="'+phoneNum+'" required=""><input type="text" placeholder="Email" value="'+contacts[splitted[1]].emails[0].value+'" required=""><input type="text" placeholder="Street" value="'+contacts[splitted[1]].addresses[0].streetAddress+'" required=""><input type="text" placeholder="City" value="'+contacts[splitted[1]].addresses[0].locality+'" required=""><button id="saveContact">Save</button></form>';
+            add = false;
+            var string = '<form><fieldset><input id = "formNameFirst" type="text" placeholder="First Name" value="'+contacts[splitted[1]].name.givenName+'" required=""><input id = "formNameLast" type="text" placeholder="Last Name" value="'+contacts[splitted[1]].name.familyName+'" required=""><input id = "formTel" type="tel" placeholder="Phone number" value="'+phoneNum+'" required=""><input id = "formEmail" type="text" placeholder="Email" value="'+contacts[splitted[1]].emails[0].value+'" required=""><input id = "formStreet" type="text" placeholder="Street" value="'+contacts[splitted[1]].addresses[0].streetAddress+'" required=""><input id = "formCity" type="text" placeholder="City" value="'+contacts[splitted[1]].addresses[0].locality+'" required=""><button id="saveContact">Save</button></form>';
 
             overlay.innerHTML += string;                               
             
-            document.getElementById("saveContact").addEventListener("click", function() {  
-    
-                console.log("saving!");
-                
-            }, false);
+            document.getElementById("saveContact").addEventListener("click", function(e){
+                e.preventDefault();
+                var formNameFirst = document.getElementById("formNameFirst").value;
+                var formNameLast = document.getElementById("formNameLast").value;
+                var formTel = document.getElementById("formTel").value;
+                var formEmail = document.getElementById("formEmail").value;
+                var formStreet = document.getElementById("formStreet").value;
+                var formCity = document.getElementById("formCity").value;
+                saveContact(formNameFirst, formNameLast, formTel, formEmail, formStreet, formCity, contacts[splitted[1]].id);
+            });
             
             
         }, false);
@@ -333,18 +320,100 @@ function editContact(contacts){
 
 function newContact(){
     console.log("new contact!");
+
+    navigator.geolocation.getCurrentPosition(onSuccess, onError);
     
-    var app = document.getElementById("app");
-    var overlay = document.createElement("div");
-    overlay.id = "overlay";
-
-    overlay.innerHTML = "";
-
-    app.appendChild(overlay);
-
-    document.getElementById("home").style.display="none";
-    
-    var string = '<form><fieldset><input type="text" placeholder="First Name" value="" required=""><input type="text" placeholder="Last Name" value="" required=""><input type="tel" placeholder="Phone number" value="" required=""><input type="text" placeholder="Email" value="" required=""><input type="text" placeholder="Street" value="" required=""><input type="text" placeholder="City" value="" required=""><button id="saveContact">Save</button></form>';
-
-            overlay.innerHTML += string;
 }
+
+function saveContact(firstName, lastName, telephone, email, street,city, contactId){
+    console.log("First Name : " + firstName);
+    console.log("Last Name : " + lastName);
+    console.log("Telephone : " + telephone);
+    console.log("E-Mail : " + email);
+    console.log("Street : " + street);
+    console.log("City : " + city);
+    console.log("contactId : " + contactId);
+    
+    contact = navigator.contacts.create();
+    contact.displayName = firstName + " " + lastName;
+
+    newName = new ContactName();
+    newName.givenName = ""+firstName+"";
+    console.log(firstName);
+    newName.familyName = ""+lastName+"";
+    console.log(lastName);
+    contact.name = newName;
+    contact.id = contactId;
+
+
+    var phoneNumbers = [];
+    phoneNumbers[0] = new ContactField("mobile", telephone, false);
+    contact.phoneNumbers = phoneNumbers;
+
+    var emails = [];
+    emails[0] = new ContactField("email", email, false);
+    contact.emails = emails;
+
+    var addresses= [];
+    var address = new ContactAddress();
+    address.locality = city;
+    address.streetAddress = street;
+    address.type = "Home";
+    address.region = city;
+
+    addresses[0]= address;
+
+    contact.addresses = addresses;
+
+    contact.save(saveNewContact,saveNewContactError);
+      
+}
+
+function saveNewContact(){
+    console.log("yay!");
+    
+    var overlay = document.getElementById("overlay"); // grabs the overlay
+    overlay.parentElement.removeChild(overlay); // has it's parent remove it
+    document.getElementById("contacts").innerHTML = ""; // empties out the contacts to allow updating
+    document.getElementById("home").style.display="block"; // make the home page appear again
+    publishContacts(); //replaces all the contacts
+}
+
+function saveNewContactError(){
+    console.log("noo");
+}
+
+//Checks if there are any contacts in the phone
+function contactExist()
+{
+    var options = new ContactFindOptions();
+    options.filter="";          // empty search string returns all contacts
+    options.multiple=true;      // return multiple results
+    filter = ["displayName"];   // return contact.displayName field
+    // find contacts
+    navigator.contacts.find(filter, yesContact, noContact, options);    
+}
+
+
+// onSuccess: Get a snapshot of the current contacts
+    //
+    function yesContact(contacts) 
+    {
+        if(contacts.length == 0)
+        {
+            //since there are no contacts, pull the information from the JSON file
+            contactPull();
+        }
+        else
+        {
+            //since there are contacts, publish those contacts
+            publishContacts()
+        }
+    };
+
+    // onError: Failed to get the contacts
+    //
+    function noContact(contactError)
+    {
+        console.log("No contacts are saved");
+    }

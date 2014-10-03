@@ -21,7 +21,7 @@ section[role="region"] > header:first-child h1 {
   text-overflow: ellipsis;
   display: block;
   overflow: hidden;
-  margin: 0 0 0 3rem;
+  margin: 0 0 0 5rem;
   height: 100%
 }
 
